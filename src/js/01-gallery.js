@@ -1,6 +1,6 @@
-import SimpleLightbox from "simplelightbox";
-import "simplelightbox/dist/simple-lightbox.min.css";
-const images = [
+
+
+ const images = [
     {
       preview:
         "https://cdn.pixabay.com/photo/2019/05/14/16/43/rchids-4202820__480.jpg",
@@ -65,9 +65,9 @@ const images = [
       description: "Lighthouse Coast Sea",
     },
   ];
-const galleryContainer = document.querySelector('.gallery');
+const gallery = document.querySelector('.gallery');
 const galleryMarkup = createGalleryMarkup(images);
-galleryContainer.insertAdjacentHTML('afterbegin', galleryMarkup);
+gallery.insertAdjacentHTML('afterbegin', galleryMarkup);
 
 function createGalleryMarkup(images) { 
   return images.map(({ preview, original, description }) => {
@@ -85,4 +85,15 @@ function createGalleryMarkup(images) {
     `;
   }).join('');
 }
-var lightbox = $('.gallery a').simpleLightbox({ /* options */ });
+gallery.addEventListener('click', (event) => {
+  event.preventDefault();})
+
+import SimpleLightbox from "simplelightbox";
+
+console.log("simplelightbox");
+
+
+
+
+
+

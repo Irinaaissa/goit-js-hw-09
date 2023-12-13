@@ -10,3 +10,5 @@ console.log(
   "Is Mangodogmail.com a valid email?: ",
   validator.isEmail("Mangodogmail.com")
 ); // Is mango@mail.com a valid email?: false
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
