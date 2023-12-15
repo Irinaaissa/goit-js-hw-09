@@ -1,88 +1,47 @@
-class FeedbackFormState {
-    static localStorageKey = 'feedback-form-state';
-  
-    #form = {}; // Reference to form
-    #inputs = []; // Array of references to form input fields
-    #formData = {}; //An object containing data that is entered into
-    //the form inputs {name: value, }
-  
-    constructor(form) {
-      if (form) this.#inputs = form.querySelectorAll('input, textarea');
-      this.#form = form;
-  
-      if (this.#inputs) {
-        this.#form.addEventListener('submit', this.onSubmitForm.bind(this));
-        this.#form.addEventListener('input', this.onInput.bind(this));
-      }
-    }
-  
-    // Class interface
-    destroy() {
-      if (this.#inputs) {
-        this.#form.removeEventListener('submit', this.onSubmitForm.bind(this));
-        this.#form.removeEventListener('input', this.onInput.bind(this));
-      }
-    }
-  
-    restoreData() {
-      this.#getDataFromLocalStorage();
-      this.#insertDataToForm();
-    }
-  
-    // Event handlers
-    onInput(event) {
-      this.#inputs.forEach(input => {
-        if (input.name) {
-          this.#formData[input.name] =
-            event.currentTarget.elements[input.name].value.trim();
-        }
-      });
-      this.#saveDataToStorage();
-    }
-  
-    onSubmitForm(event) {
-      event.preventDefault();
-      if (!this.#isFormFilled()) {
-        return alert('Not all fields are filled in');
-      }
-      console.log('submit data: ', this.#formData);
-      localStorage.removeItem(FeedbackFormState.localStorageKey);
-      this.#formData = {};
-      event.currentTarget.reset();
-    }
-  
-    // Private methods
-    #getDataFromLocalStorage() {
-      const strSavedData = localStorage.getItem(
-        FeedbackFormState.localStorageKey
-      );
-      this.#formData = strSavedData ? JSON.parse(strSavedData) : {};
-    }
-  
-    #insertDataToForm() {
-      const dataKeys = Object.keys(this.#formData);
-  
-      dataKeys.forEach(key => {
-        if (this.#form.elements[key]) {
-          this.#form.elements[key].value = this.#formData[key];
-        }
-      });
-    }
-  
-    #saveDataToStorage() {
-      localStorage.setItem(
-        FeedbackFormState.localStorageKey,
-        JSON.stringify(this.#formData)
-      );
-    }
-  
-    #isFormFilled() {
-      let result = true;
-      this.#inputs.forEach(input => {
-        result &&= this.#form.elements[input.name].value.trim();
-      });
-      return result;
+
+const form = document.querySelector('.feedback-form');
+
+form.addEventListener('input', function(event) {
+  const inputs = this.elements;
+  const formData = {};
+
+  for (let input of inputs) {
+    if (input.type === 'email' || input.type === 'textarea') {
+      formData[input.name] = input.value;
     }
   }
+
+  localStorage.setItem('feedback-form-state', JSON.stringify(formData));
+});
+document.addEventListener("DOMContentLoaded", function() {
   
-  export default FeedbackFormState;
+  if(localStorage.getItem("email") && localStorage.getItem("message")) {
+    document.querySelector('input[name="email"]').value = localStorage.getItem("email");
+    document.querySelector('textarea[name="message"]').value = localStorage.getItem("message");
+  }
+});
+
+
+document.querySelector('.feedback-form').addEventListener("submit", function(event) {
+
+  let emailValue = document.querySelector('input[name="email"]').value;
+  let messageValue = document.querySelector('textarea[name="message"]').value;
+  
+  
+  localStorage.setItem("email", emailValue);
+  localStorage.setItem("message", messageValue);
+});
+document.querySelector(".feedback-form").addEventListener("submit", function(event) {
+  event.preventDefault(); 
+
+  
+  let email = document.querySelector("[name='email']").value;
+  let message = document.querySelector("[name='message']").value;
+
+  
+  console.log({ email, message });
+
+
+  document.querySelector("[name='email']").value = "";
+  document.querySelector("[name='message']").value = "";
+});
