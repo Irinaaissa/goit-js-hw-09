@@ -1,41 +1,36 @@
-const form = document.querySelector('.feedback-form');
 
-form.addEventListener('input', function (event) {
-  const inputs = this.elements;
-  const formData = {};
 
-  for (let input of inputs) {
-    if (input.type === 'email' || input.type === 'textarea') {
-      formData[input.name] = input.value;
-    }
-  }
-
-  localStorage.setItem('feedback-form-state', JSON.stringify(formData));
-});
 document.addEventListener('DOMContentLoaded', function () {
-  if (localStorage.getItem('email') && localStorage.getItem('message')) {
-    document.querySelector('input[name="email"]').value =
-      localStorage.getItem('email');
-    document.querySelector('textarea[name="message"]').value =
-      localStorage.getItem('message');
+  const form = document.querySelector('.feedback-form');
+  let storedEmail = localStorage.getItem('email');
+  let storedMessage = localStorage.getItem('message');
+  
+  localStorage.removeItem('email');
+  localStorage.removeItem('message');
+  
+  if (storedEmail && storedMessage) {
+    document.querySelector('input[name="email"]').value = JSON.parse(storedEmail);
+    document.querySelector('textarea[name="message"]').value = JSON.parse(storedMessage);
   }
-});
 
-  document.querySelector('.feedback-form').addEventListener('submit', function (event) {
+
+  form.addEventListener('submit', function (event) {
     event.preventDefault();
+
     let email = document.querySelector("[name='email']").value;
     let message = document.querySelector("[name='message']").value;
-  
+
     if (!email || !message) {
-      event.preventDefault();
-    
       alert('Please fill in both fields!');
     } else {
       console.log({ email, message });
+      localStorage.setItem('email', JSON.stringify(email));
+      localStorage.setItem('message', JSON.stringify(message));
     }
-  
+
     document.querySelector("[name='email']").value = '';
     document.querySelector("[name='message']").value = '';
-  
+
     event.target.reset();
   });
+});
