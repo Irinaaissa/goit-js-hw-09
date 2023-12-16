@@ -7,7 +7,7 @@ form.addEventListener('input', function (event) {
         email: document.querySelector("[name='email']").value,
         message: document.querySelector("[name='message']").value,
     };
-    localStorage.setItem('feedback-form-state', JSON.stringify(formData));
+    localStorage.setItem('feedback-form-state', JSON.stringify(Object.fromEntries(new FormData(form))));
     localStorage.setItem('email', JSON.stringify(formData.email));
     localStorage.setItem('message', JSON.stringify(formData.message));
 });
