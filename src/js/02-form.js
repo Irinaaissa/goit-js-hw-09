@@ -13,8 +13,6 @@ form.addEventListener('input', function (event) {
 
 document.addEventListener('DOMContentLoaded', function () {
     
-    const savedEmail = JSON.parse(localStorage.getItem('email'));
-    const savedMessage = JSON.parse(localStorage.getItem('message'));
     let storedData = localStorage.getItem('feedback-form-state');
 
   if (storedData) {
@@ -39,4 +37,5 @@ form.addEventListener('submit', function (event) {
     document.querySelector("[name='email']").value = '';
     document.querySelector("[name='message']").value = '';
     event.target.reset();
+    localStorage.removeItem('feedback-form-state'); //очищає форму після сабміту
 });
