@@ -8,14 +8,20 @@ form.addEventListener('input', function (event) {
         message: document.querySelector("[name='message']").value,
     };
     localStorage.setItem('feedback-form-state', JSON.stringify(Object.fromEntries(new FormData(form))));
-    localStorage.setItem('email', JSON.stringify(formData.email));
-    localStorage.setItem('message', JSON.stringify(formData.message));
+    
 });
 
 document.addEventListener('DOMContentLoaded', function () {
     
     const savedEmail = JSON.parse(localStorage.getItem('email'));
     const savedMessage = JSON.parse(localStorage.getItem('message'));
+    let storedData = localStorage.getItem('feedback-form-state');
+
+  if (storedData) {
+    storedData = JSON.parse(storedData);
+    document.querySelector('input[name="email"]').value = storedData.email || "";
+    document.querySelector('textarea[name="message"]').value = storedData.message || "";
+  }
 
 });
 
